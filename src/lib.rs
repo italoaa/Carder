@@ -99,7 +99,7 @@ impl fmt::Display for Hand {
         let mut hand_string: String = "".to_string();
 
         // looping over cards
-        for index in (0..9) {
+        for index in 0..9 {
             let padding = "    ".to_string();
 
             for card in &cards_array {

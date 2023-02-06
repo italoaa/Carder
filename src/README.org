@@ -1,0 +1,8 @@
+#+title: Carder
+
+This project is a simple library to print standard playing cards to the terminal. I plan to make more card games in the terminal so this library will be useful.
+* Preview
+
+#+DOWNLOADED: screenshot @ 2023-02-06 20:03:02
+#+attr_org: :width 300px
+[[file:files/20230206-200302_screenshot.png]]
