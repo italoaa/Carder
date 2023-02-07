@@ -41,15 +41,19 @@ impl Card {
     }
 
     pub fn single_card_list(&self) -> [String; 9] {
+        let mut balance = " ".to_string();
+        if (self.rank >= 10) {
+            balance = "".to_string();
+        }
         [
             "┌─────────┐".to_string(),
-            format!("│{}        │", self.rank).to_string(),
+            format!("│{}{}       │", self.rank, balance).to_string(),
             "│         │".to_string(),
             "│         │".to_string(),
             format!("│    {}    │", self.suit).to_string(),
             "│         │".to_string(),
             "│         │".to_string(),
-            format!("│        {}│", self.rank).to_string(),
+            format!("│       {}{}│", balance, self.rank).to_string(),
             "└─────────┘".to_string(),
         ]
     }
