@@ -1,7 +1,50 @@
 use core::fmt;
+use rand::seq::SliceRandom;
+use rand::thread_rng;
 
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+pub struct Deck {
+    pub pile: Vec<Card>,
+    pub style: DeckType,
+}
+
+pub enum DeckType {
+    Poker,
+    Italian,
+}
+
+impl Deck {
+    pub fn new(style: DeckType) -> Deck {
+        Deck {
+            pile: Deck::init_cards(&style),
+            style,
+        }
+    }
+    fn init_cards(style: &DeckType) -> Vec<Card> {
+        let exclude: Vec<u32> = match style {
+            DeckType::Italian => {
+                vec![8, 9, 10]
+            }
+            DeckType::Poker => {
+                vec![]
+            }
+        };
+
+        let mut pile: Vec<Card> = vec![];
+        for suit in [Suit::Clubs, Suit::Diamonds, Suit::Hearts, Suit::Spades] {
+            for rank in 1..14 {
+                if !exclude.contains(&rank) {
+                    pile.push(Card::new(rank, suit.clone()))
+                }
+            }
+        }
+        pile
+    }
+    pub fn shuffle(&mut self) {
+        self.pile.shuffle(&mut thread_rng())
+    }
+    pub fn draw(&mut self) -> Card {
+        self.pile.pop().unwrap()
+    }
 }
 
 pub struct Card {
@@ -9,6 +52,7 @@ pub struct Card {
     pub suit: Suit,
 }
 
+#[derive(Clone, Debug)]
 pub enum Suit {
     Clubs,
     Diamonds,
@@ -23,9 +67,9 @@ pub struct Hand {
 
 impl Hand {
     // This returns a Hand with at least one card
-    pub fn new(rank: u32, suit: Suit) -> Hand {
+    pub fn new() -> Hand {
         Hand {
-            cards: vec![Card::new(rank, suit)],
+            cards: vec![],
             count: 1,
         }
     }
@@ -42,7 +86,7 @@ impl Card {
 
     pub fn single_card_list(&self) -> [String; 9] {
         let mut balance = " ".to_string();
-        if (self.rank >= 10) {
+        if self.rank >= 10 {
             balance = "".to_string();
         }
         [
@@ -104,7 +148,7 @@ impl fmt::Display for Hand {
 
         // looping over cards
         for index in 0..9 {
-            let padding = "    ".to_string();
+            let padding = "  ".to_string();
 
             for card in &cards_array {
                 hand_string.push_str(&card[index]);
